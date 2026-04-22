@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Food Picker</title>
+    <style>
+        /* Simple, clean beginner styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .main-box {
+            background-color: white;
+            width: 350px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #d35400;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Styling the buttons */
+        .choice-btn {
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border: 1px solid #999;
+            background-color: #eee;
+        }
+
+        .active-veg { background-color: #27ae60; color: white; }
+        .active-nonveg { background-color: #c0392b; color: white; }
+
+        select {
+            padding: 10px;
+            width: 90%;
+            margin-top: 10px;
+        }
+
+        #spin-button {
+            background-color: #2980b9;
+            color: white;
+            padding: 15px;
+            width: 90%;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #spin-button:hover {
+            background-color: #3498db;
+        }
+
+        /* The result area */
+        #result-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff8e1;
+            border: 1px dashed #f39c12;
+            min-height: 50px;
+        }
+
+        .food-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-box">
+        <h1>Dinner Decider</h1>
+
+        <!-- Step 1: Veg or Non-Veg -->
+        <div class="section">
+            <p><strong>Step 1: Choose Type</strong></p>
+            <button id="vBtn" class="choice-btn active-veg" onclick="setType('veg')">Veg Only</button>
+            <button id="nvBtn" class="choice-btn" onclick="setType('nonveg')">Chicken/Fish</button>
+        </div>
+
+        <!-- Step 2: Cuisine -->
+        <div class="section">
+            <p><strong>Step 2: Choose Cuisine</strong></p>
+            <select id="mySelect">
+                <option value="Maharashtrian">Maharashtrian</option>
+                <option value="Punjabi">Punjabi</option>
+                <option value="South Indian">South Indian</option>
+                <option value="White People Food">White People Food</option>
+            </select>
+        </div>
+
+        <button id="spin-button" onclick="pickRandomFood()">What should I eat?</button>
+
+        <div id="result-area">
+            <div id="food-text" class="food-name">Click the button!</div>
+        </div>
+    </div>
+
+    <script>
+        // Simple variable to keep track of choice
+        var foodType = "veg";
+
+        // This object holds all our food data
+        var menu = {
+            "Maharashtrian": {
+                "veg": ["Dodka Bhaji", "Vanga Bharit", "Gangafal Bhaji", "Gilka Bhaji", "Bhendi Fry", "Varann Bhaat", "Dhemsha Bhaji", "Aloo Rassa", "Paneer Kolhapuri"],
+                "nonveg": ["Chicken Tambada Rassa", "Chicken Pandhara Rassa", "Malvani Fish Fry", "Surmai Fry", "Bombil Fry"]
+            },
+            "Punjabi": {
+                "veg": ["Dal Makhani", "Paneer Tikka Masala", "Chole Bhature", "Rajma Chawal"],
+                "nonveg": ["Butter Chicken", "Chicken Tikka", "Amritsari Fish Fry", "Chicken Patiala"]
+            },
+            "South Indian": {
+                "veg": ["Masala Dosa", "Idli Sambar", "Medu Vada", "Curd Rice"],
+                "nonveg": ["Chicken Biryani", "Chicken 65", "Fish Curry", "Prawn Roast"]
+            },
+            "White People Food": {
+                "veg": ["Mac & Cheese", "Mashed Potatoes", "Grilled Cheese", "Veggie Pizza"],
+                "nonveg": ["Chicken Pot Pie", "Fried Chicken", "Fish and Chips", "Chicken Alfredo"]
+            }
+        };
+
+        // Function to switch between Veg and Non-Veg buttons
+        function setType(choice) {
+            foodType = choice;
+            var vBtn = document.getElementById("vBtn");
+            var nvBtn = document.getElementById("nvBtn");
+
+            if (choice == "veg") {
+                vBtn.className = "choice-btn active-veg";
+                nvBtn.className = "choice-btn";
+            } else {
+                vBtn.className = "choice-btn";
+                nvBtn.className = "choice-btn active-nonveg";
+            }
+        }
+
+        // The main function that picks the food
+        function pickRandomFood() {
+            var selectedCuisine = document.getElementById("mySelect").value;
+            
+            // Get the list based on our choices
+            var list = menu[selectedCuisine][foodType];
+            
+            // Math.random picks a number, Math.floor rounds it down to a whole number
+            var randomNumber = Math.floor(Math.random() * list.length);
+            var finalFood = list[randomNumber];
+
+            // Put the food name into the result box
+            document.getElementById("food-text").innerHTML = finalFood;
+        }
+    </script>
+
+</body>
+</html>
